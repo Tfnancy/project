@@ -6,8 +6,8 @@ A Streamlit site about community care and ways to support children and families 
 
 Double-click `index.html` to open the standalone site in your browser. Keep
 `styles.css` and the original JPEGs in `images/` in place. The site and photos
-work offline. Git excludes the original JPEGs, so a fresh checkout does not
-include them.
+work offline. The six gallery JPEGs are included in the repository and are used
+by both versions of the site.
 
 ## Connect online donations
 
@@ -29,7 +29,7 @@ python -m streamlit run app.py
 python images/anonymize.py --people
 ```
 
-Keep source photos in `images/`. Git ignores them. The script reduces each
+Keep source photos in `images/`. The script reduces each
 WhatsApp photo to one average color and draws generic figures in a fresh PNG
 under `images/anonymized/`.
 The result carries no faces, source filenames, location metadata, or source
