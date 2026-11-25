@@ -11,7 +11,7 @@ PHOTO_DESCRIPTIONS = {
     "12.48.36 PM.jpeg": "Two children sitting on a bench",
     "12.48.38 PM.jpeg": "Children and adults standing outside a blue building",
     "12.48.39 PM.jpeg": "A group gathered outside beside stacked supplies",
-    "12.48.40 PM (1).jpeg": "A bicycle decorated with balloons",
+    "12.48.40 PM (1).jpeg": "A person seated in a blue wheelchair",
     "12.48.40 PM.jpeg": "A group working at an outdoor construction site",
     "12.48.41 PM.jpeg": "Children and adults gathered indoors on colorful mats",
 }
@@ -49,8 +49,9 @@ def info_page(slug: str):
 
 
 def home():
-    with st.container(key="hero", horizontal=True, gap="large", vertical_alignment="center"):
-        with st.container(width=380):
+    with st.container(key="hero"):
+        intro, picture = st.columns([1, 1.1], gap="large", vertical_alignment="center")
+        with intro:
             st.caption("Children’s home and community care · Kenya")
             st.title("A safe place to grow")
             st.write("Children need dependable care, support at school, and time to play and build friendships.")
@@ -58,7 +59,7 @@ def home():
         if photos:
             cover = next((photo for photo in photos if photo.name.endswith("12.48.41 PM.jpeg")), photos[0])
             alt = PHOTO_DESCRIPTIONS.get(cover.name.split(" at ")[-1], "Illustration of figures standing together")
-            st.image(str(cover), width=540, alt=alt)
+            picture.image(str(cover), width="stretch", alt=alt)
 
     st.header("Daily care for children")
     with st.grid(min_column_width=220, gap="medium") as care:
@@ -124,13 +125,23 @@ def donate():
             st.button("Donate · Coming soon", type="primary", width="stretch", disabled=True)
 
 
+homepage = st.Page(home, title="Home", default=True)
 giving = st.Page(donate, title="Ways to give", url_path="donate")
 details = {slug: info_page(slug) for slug in INFO_PAGES}
 page = st.navigation({
-    "": [st.Page(home, title="Home", default=True), giving],
+    "": [homepage, giving],
     "About the home": [details[slug] for slug in ("about", "board", "founders", "partners", "tour", "impact")],
     "Get involved": [details[slug] for slug in ("volunteer", "contact", "safeguarding")],
 })
+with st.container(key="desktop-nav"):
+    st.markdown("**Pastor Cosmus Muema**")
+    with st.container(horizontal=True, gap="small"):
+        for target in (
+            homepage, details["about"], details["tour"], details["impact"],
+            details["volunteer"], details["contact"], giving,
+        ):
+            st.page_link(target)
+
 page.run()
 
 st.divider()

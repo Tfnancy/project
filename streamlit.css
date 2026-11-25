@@ -37,6 +37,29 @@
 .cosmus-info .faq details { border: 1px solid #d6e2d8; border-radius: .75rem; padding: .65rem .85rem; margin-bottom: .55rem; }
 .cosmus-info .faq summary { cursor: pointer; min-height: 44px; padding-block: .5rem; font-weight: 700; }
 
+.st-key-desktop-nav { display: none; }
+
+@media (min-width: 1100px) and (hover: hover) and (pointer: fine) {
+  [data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"],
+  [data-testid="stExpandSidebarButton"] { display: none !important; }
+  .st-key-desktop-nav {
+    display: flex;
+    margin-bottom: .75rem;
+    padding: 1rem 1.25rem;
+    background: #fff;
+    border: 1px solid #d6e2d8;
+    border-radius: 1.15rem;
+  }
+  .st-key-desktop-nav a {
+    border: 1px solid #d6e2d8;
+    border-radius: 100px;
+    padding: .45rem .85rem;
+  }
+  .st-key-desktop-nav a:hover { background: #eaf1e9; }
+  .st-key-desktop-nav a[href$="/donate"] { background: #245c49; color: white; }
+  .st-key-desktop-nav a:focus-visible { outline: 3px solid #a85c1b; outline-offset: 2px; }
+}
+
 @media (max-width: 680px) {
   .st-key-hero, .st-key-donation, .cosmus-info .giving { padding: 1rem; border-radius: 1rem; }
   .st-key-hero h1, .st-key-donation h1, .cosmus-info h1 { font-size: clamp(2rem, 8vw, 3rem); }
