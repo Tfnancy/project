@@ -39,6 +39,41 @@
 
 .st-key-desktop-nav { display: none; }
 
+/* Keep Streamlit's native sidebar button and its keyboard behavior. */
+button[data-testid="stExpandSidebarButton"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  min-height: 44px;
+  padding: .45rem .85rem;
+  border: 1px solid #b7cdbd;
+  border-radius: 100px;
+  background: #eaf1e9;
+  color: #172f28;
+  font-size: .95rem;
+  font-weight: 700;
+  line-height: 1;
+  touch-action: manipulation;
+}
+
+button[data-testid="stExpandSidebarButton"] > * { display: none; }
+
+button[data-testid="stExpandSidebarButton"]::before {
+  content: "";
+  width: 1rem;
+  height: .75rem;
+  border-block: 2px solid currentColor;
+  background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+}
+
+button[data-testid="stExpandSidebarButton"]::after { content: "Menu"; }
+button[data-testid="stExpandSidebarButton"]:hover { background: #dbe9dc; }
+button[data-testid="stExpandSidebarButton"]:focus-visible {
+  outline: 3px solid #a85c1b;
+  outline-offset: 2px;
+}
+
 @media (min-width: 1100px) and (hover: hover) and (pointer: fine) {
   [data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"],
   [data-testid="stExpandSidebarButton"] { display: none !important; }
