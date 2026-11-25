@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="wrap masthead">
     <a class="brand" href="index.html">Pastor Cosmus Muema</a>
     <nav aria-label="Main navigation">
@@ -19,7 +20,7 @@
       <a href="contact.html">Contact</a>
     </nav>
   </header>
-  <main class="wrap">
+  <main id="main-content" class="wrap" tabindex="-1">
     <section class="help giving donation-layout" aria-labelledby="giving-title">
       <div>
         <h1 id="giving-title">Support the children’s home</h1>
@@ -61,5 +62,6 @@
   </main>
   <footer class="wrap">Pastor Cosmus Muema · 2020</footer>
   <script src="donations.js" defer></script>
+  <script src="navigation.js" defer></script>
 </body>
 </html>

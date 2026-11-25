@@ -33,7 +33,7 @@ def info_page(slug: str):
     def render():
         # Reuse the standalone page body to keep both versions in sync.
         document = (ROOT / f"{slug}.html").read_text(encoding="utf-8")
-        body = document.split('<main class="wrap">', 1)[1].split("</main>", 1)[0]
+        body = document.partition("<main")[2].partition(">")[2].partition("</main>")[0]
         content = re.sub(r'href="([a-z-]+)\.html(#[^"]+)?"', local_route, body)
         st.html(f'<div class="cosmus-info">{content}</div>')
 

@@ -14,10 +14,13 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; }
+[hidden] { display: none !important; }
 .wrap { width: min(1180px, calc(100% - 2rem)); margin-inline: auto; }
 a { color: inherit; text-underline-offset: .22em; }
 a:hover { text-decoration-thickness: .15em; }
 :focus-visible { outline: 3px solid #a85c1b; outline-offset: 4px; }
+.skip-link { position: absolute; top: .5rem; left: .5rem; z-index: 2; padding: .65rem 1rem; background: var(--surface); transform: translateY(-160%); }
+.skip-link:focus { transform: none; }
 .masthead, nav { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.4rem; }
 .masthead { justify-content: space-between; padding-block: 1.1rem; }
 .brand { font: bold 1.35rem Georgia, serif; text-decoration: none; }
@@ -34,6 +37,7 @@ nav a {
 nav a:hover, nav a[aria-current="page"] { background: var(--mist); }
 nav a[href="donate.html"] { background: var(--green); color: #fff; }
 nav a[href="donate.html"]:hover { background: #183f32; }
+.menu-button { min-height: 44px; padding: .45rem .85rem; border: 1px solid #83978a; border-radius: 100px; background: var(--surface); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
 section { margin-block: clamp(2.5rem, 6vw, 5rem); }
 .hero {
   display: grid;
@@ -50,6 +54,7 @@ section { margin-block: clamp(2.5rem, 6vw, 5rem); }
 p { margin: 0 0 1rem; }
 .context { color: #f6d492; font-weight: 650; }
 h1, h2, h3 { font-family: Georgia, serif; line-height: 1.02; }
+h1, h2, h3, article { overflow-wrap: anywhere; }
 h1 { margin: 0 0 1rem; font-size: clamp(3rem, 7vw, 6rem); font-weight: 500; letter-spacing: -.045em; }
 h2 { margin: 0 0 1rem; font-size: clamp(2rem, 4vw, 3.2rem); }
 h3 { margin: 0 0 .75rem; font-size: 1.45rem; }
@@ -129,8 +134,31 @@ summary { cursor: pointer; width: fit-content; padding: .65rem 1rem; font-weight
 .gallery { margin-top: 1rem; }
 .gallery a { display: block; border-radius: .85rem; }
 .gallery img { aspect-ratio: 4 / 3; object-fit: cover; }
+.faq { display: grid; gap: .65rem; }
+.faq details { border: 1px solid var(--line); border-radius: .85rem; background: var(--surface); }
+.faq summary { width: auto; background: transparent; min-height: 44px; }
+.faq details p { margin: 0; padding: .15rem 1rem 1rem; }
 footer { padding-block: 1.4rem; border-top: 1px solid var(--line); }
+
+@media (max-width: 880px) {
+  .masthead nav { flex-basis: 100%; padding: .45rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); }
+  .hero { padding: clamp(1rem, 3.5vw, 2.5rem); }
+  .hero h1 { font-size: clamp(2.45rem, 7.5vw, 4.5rem); }
+}
 
 @media (max-width: 680px) {
   .hero, .donation-layout { grid-template-columns: 1fr; }
+  .hero img { aspect-ratio: 3 / 2; }
+  .hero-actions .button { width: 100%; }
+  .masthead { gap: .75rem; }
+  .masthead nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .masthead nav a { border-radius: .7rem; }
+  .suggestions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .giving-preview input[type="number"], .giving-status .button { width: 100%; }
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+}
+
+@media (max-width: 380px) {
+  .masthead .brand { font-size: 1.13rem; }
+  .wrap { width: calc(100% - 1.25rem); }
 }

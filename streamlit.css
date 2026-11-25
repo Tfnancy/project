@@ -27,3 +27,12 @@
 }
 
 .cosmus-info article h2 { font-size: 1.45rem; }
+.cosmus-info h1, .cosmus-info h2 { overflow-wrap: anywhere; }
+.cosmus-info .faq details { border: 1px solid #d6e2d8; border-radius: .75rem; padding: .65rem .85rem; margin-bottom: .55rem; }
+.cosmus-info .faq summary { cursor: pointer; min-height: 44px; padding-block: .5rem; font-weight: 700; }
+
+@media (max-width: 680px) {
+  .st-key-hero, .st-key-donation, .cosmus-info .giving { padding: 1rem; border-radius: 1rem; }
+  .st-key-hero h1, .st-key-donation h1, .cosmus-info h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  .st-key-donation button, .st-key-hero a { min-height: 44px; }
+}

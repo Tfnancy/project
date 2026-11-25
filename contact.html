@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="wrap masthead">
     <a class="brand" href="index.html">Pastor Cosmus Muema</a>
     <nav aria-label="Main navigation">
@@ -18,7 +19,7 @@
       <a href="contact.html" aria-current="page">Contact</a>
     </nav>
   </header>
-  <main class="wrap">
+  <main id="main-content" class="wrap" tabindex="-1">
     <section class="help giving" aria-labelledby="page-title">
       <h1 id="page-title">Contact</h1>
       <p>Verified contact details for the children’s home are pending. Volunteer applications, visit requests, and general inquiries are currently unavailable through the site.</p>
@@ -40,7 +41,25 @@
         <a href="safeguarding.html">Child safety and privacy</a>
       </article>
     </div>
+    <section aria-labelledby="questions-title">
+      <h2 id="questions-title">Common questions</h2>
+      <div class="faq">
+        <details>
+          <summary>Can I donate online?</summary>
+          <p><a href="donate.html">Check the giving page</a> for checkout availability.</p>
+        </details>
+        <details>
+          <summary>Can I visit or volunteer?</summary>
+          <p>Visits should be arranged in advance once an official contact is available. <a href="volunteer.html">Explore volunteer roles</a> while applications are pending.</p>
+        </details>
+        <details>
+          <summary>How can I raise a safety concern?</summary>
+          <p>Use a verified, private child protection channel. The <a href="safeguarding.html">child safety page</a> explains what information to keep private.</p>
+        </details>
+      </div>
+    </section>
   </main>
   <footer class="wrap">Pastor Cosmus Muema · 2020</footer>
+  <script src="navigation.js" defer></script>
 </body>
 </html>
