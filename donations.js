@@ -2,12 +2,22 @@
 const donationCheckout = "";
 
 const amount = document.getElementById("amount");
-for (const button of document.querySelectorAll("[data-amount]")) {
+const presets = document.querySelectorAll("[data-amount]");
+
+function updatePresets() {
+  for (const button of presets) {
+    button.setAttribute("aria-pressed", String(button.dataset.amount === amount.value));
+  }
+}
+
+for (const button of presets) {
   button.addEventListener("click", () => {
     amount.value = button.dataset.amount;
-    amount.focus();
+    updatePresets();
   });
 }
+amount.addEventListener("input", updatePresets);
+updatePresets();
 
 if (URL.canParse(donationCheckout)) {
   const checkout = new URL(donationCheckout);

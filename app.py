@@ -9,6 +9,7 @@ originals = sorted(IMAGES.glob("WhatsApp Image *.jpeg"))
 photos = originals or sorted((IMAGES / "anonymized").glob("people-*.png"))
 
 st.set_page_config(page_title="Pastor Cosmus Muema | Children's Home", page_icon=":material/home:", layout="wide")
+st.html(ROOT / "streamlit.css")
 
 INFO_PAGES = {
     "about": "Who we are",
@@ -33,13 +34,14 @@ def info_page(slug: str):
         # Reuse the standalone page body to keep both versions in sync.
         document = (ROOT / f"{slug}.html").read_text(encoding="utf-8")
         body = document.split('<main class="wrap">', 1)[1].split("</main>", 1)[0]
-        st.html(re.sub(r'href="([a-z-]+)\.html(#[^"]+)?"', local_route, body))
+        content = re.sub(r'href="([a-z-]+)\.html(#[^"]+)?"', local_route, body)
+        st.html(f'<div class="cosmus-info">{content}</div>')
 
     return st.Page(render, title=INFO_PAGES[slug], url_path=slug)
 
 
 def home():
-    with st.container(horizontal=True, gap="large", vertical_alignment="center"):
+    with st.container(key="hero", horizontal=True, gap="large", vertical_alignment="center"):
         with st.container(width=380):
             st.caption("Children’s home and community care · Kenya")
             st.title("A safe place to grow")
@@ -62,26 +64,45 @@ def home():
                 st.write(description)
 
     st.header("Get involved", anchor="help")
-    st.page_link(giving, label="Explore giving options")
-    st.page_link(details["volunteer"], label="Explore volunteer roles")
-    st.page_link(details["partners"], label="Explore partnerships")
-    st.page_link(details["safeguarding"], label="Child safety and privacy")
+    with st.grid(min_column_width=230, gap="medium") as support:
+        for target, title, description, link in [
+            (giving, "Ways to give", "Help with meals, bedding, and school supplies.", "See giving options"),
+            (details["volunteer"], "Volunteer", "Offer time, skills, or help with a collection.", "Explore volunteer roles"),
+            (details["partners"], "Community partners", "Coordinate practical support with a local group.", "Explore partnerships"),
+            (details["safeguarding"], "Child safety and privacy", "Read guidance for visitors and supporters.", "Read the guidance"),
+        ]:
+            with support.container(border=True, height="stretch"):
+                st.subheader(title)
+                st.write(description)
+                st.page_link(target, label=link)
 
     st.header("Gallery")
     if photos:
-        with st.expander("View photos" if originals else "View illustrations"):
+        with st.expander("View photos" if originals else "View illustrations", expanded=True):
             with st.grid(min_column_width=210, gap="small") as gallery:
                 for index, photo in enumerate(photos, start=1):
                     gallery.image(str(photo), width="stretch", alt=f"Gallery image {index}")
 
 
 def donate():
-    st.title("Support the children’s home")
-    st.write("Daily care takes steady support, from meals and bedding to school supplies and health checks.")
-    st.radio("Giving frequency", ["One time", "Monthly"], horizontal=True)
-    st.number_input("Donation amount (KES)", min_value=1, value=1000, step=100)
-    st.caption("Online giving is coming soon. The amount shown is a preview.")
-    st.button("Donate · Coming soon", disabled=True)
+    with st.container(key="donation", horizontal=True, gap="large"):
+        with st.container(width=385):
+            st.title("Support the children’s home")
+            st.write("Daily care takes steady support, from meals and bedding to school supplies and health checks.")
+        with st.container(width=430, border=True):
+            st.subheader("Online giving")
+            st.segmented_control("Giving frequency", ["One time", "Monthly"], default="One time", selection_mode="single")
+            st.session_state.setdefault("donation_amount", 1000)
+            with st.container(horizontal=True):
+                for amount in (500, 1000, 2500, 5000):
+                    st.button(
+                        f"KES {amount:,}",
+                        on_click=st.session_state.update,
+                        kwargs={"donation_amount": amount},
+                    )
+            st.number_input("Donation amount (KES)", min_value=1, step=1, key="donation_amount")
+            st.caption("Online giving is coming soon. The amount shown is a preview.")
+            st.button("Donate · Coming soon", type="primary", width="stretch", disabled=True)
 
 
 giving = st.Page(donate, title="Ways to give", url_path="donate")
