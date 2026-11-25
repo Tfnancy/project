@@ -1,62 +1,97 @@
 from pathlib import Path
+import re
 
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parent
-ASSETS = ROOT / "assets"
+IMAGES = ROOT / "images"
+originals = sorted(IMAGES.glob("WhatsApp Image *.jpeg"))
+photos = originals or sorted((IMAGES / "anonymized").glob("people-*.png"))
 
-st.set_page_config(page_title="Pastor Cosmus Muema", page_icon="🌿", layout="wide")
-st.html("""
-<style>
-.block-container { max-width: 1180px; padding-top: 3rem; }
-.st-key-hero { background: #19382e; border-radius: 24px; padding: clamp(1.5rem, 5vw, 4rem); }
-.st-key-hero h1 { color: #fff4db; font-family: Georgia, serif; font-weight: 500;
-  font-size: clamp(2.9rem, 7vw, 6rem); line-height: 1; letter-spacing: -.055em; }
-.st-key-hero p { color: #f3e4c6; max-width: 36ch; font-size: 1.15rem; }
-.st-key-hero img, .stImage img { border-radius: 14px; }
-h2 { font-family: Georgia, serif; }
-</style>
-""")
+st.set_page_config(page_title="Pastor Cosmus Muema | Children's Home", page_icon=":material/home:", layout="wide")
 
-with st.container(key="hero"):
-    introduction, visual = st.columns([1.15, 1], vertical_alignment="center")
-    with introduction:
-        st.title("Pastor Cosmus Muema")
-        st.write("Faith, service, and practical ways to support children and families in Kenya.")
-    with visual:
-        cover = ASSETS / "gallery-01.png"
-        if cover.is_file():
-            st.image(str(cover), width="stretch")
+INFO_PAGES = {
+    "about": "Who we are",
+    "board": "The board",
+    "founders": "The founders",
+    "partners": "Community partners",
+    "tour": "Tour the home",
+    "impact": "Impact in action",
+    "volunteer": "Volunteer",
+    "contact": "Contact",
+    "safeguarding": "Child safety and privacy",
+}
 
-overview, gallery, involvement = st.tabs(["Community care", "Gallery", "Get involved"])
 
-with overview:
-    st.header("Helping children thrive")
-    st.write("A safe home, an education, and access to healthcare give children room to grow.")
-    for column, (title, description) in zip(st.columns(3), [
-        ("Education", "Help children access learning and build skills for their future."),
-        ("Shelter", "Support work that gives children a safe and caring place to live."),
-        ("Healthcare", "Help children get the care they need to grow up healthy."),
-    ]):
-        with column.container(border=True):
-            st.subheader(title)
-            st.write(description)
+def local_route(match: re.Match[str]) -> str:
+    page, anchor = match.groups()
+    return f'href="{"/" if page == "index" else "/" + page}{anchor or ""}"'
 
-with gallery:
+
+def info_page(slug: str):
+    def render():
+        # Reuse the standalone page body to keep both versions in sync.
+        document = (ROOT / f"{slug}.html").read_text(encoding="utf-8")
+        body = document.split('<main class="wrap">', 1)[1].split("</main>", 1)[0]
+        st.html(re.sub(r'href="([a-z-]+)\.html(#[^"]+)?"', local_route, body))
+
+    return st.Page(render, title=INFO_PAGES[slug], url_path=slug)
+
+
+def home():
+    with st.container(horizontal=True, gap="large", vertical_alignment="center"):
+        with st.container(width=380):
+            st.caption("Children’s home and community care · Kenya")
+            st.title("A safe place to grow")
+            st.write("Children need dependable care, support at school, and time to play and build friendships.")
+            st.page_link(giving, label="Ways to give", icon=":material/volunteer_activism:")
+        if photos:
+            alt = "Photo from the home’s gallery" if originals else "Illustration of figures standing together"
+            st.image(str(photos[0]), width=540, alt=alt)
+
+    st.header("Daily care for children")
+    with st.grid(min_column_width=220, gap="medium") as care:
+        for title, description in [
+            ("A safe home", "Regular meals, a comfortable place to sleep, and dependable adults."),
+            ("Support at school", "Learning materials, time for homework, and encouragement."),
+            ("Health and well-being", "Health checks, emotional support, and time to rest and play."),
+            ("Family and community", "Support safe relationships with family and trusted adults."),
+        ]:
+            with care.container(border=True, height="stretch"):
+                st.subheader(title)
+                st.write(description)
+
+    st.header("Get involved", anchor="help")
+    st.page_link(giving, label="Explore giving options")
+    st.page_link(details["volunteer"], label="Explore volunteer roles")
+    st.page_link(details["partners"], label="Explore partnerships")
+    st.page_link(details["safeguarding"], label="Child safety and privacy")
+
     st.header("Gallery")
-    illustrations = sorted(ASSETS.glob("gallery-*.png"))
-    if illustrations:
-        st.caption("Illustrations made from the average colors of private photographs.")
-        columns = st.columns(3)
-        for index, illustration in enumerate(illustrations):
-            columns[index % len(columns)].image(str(illustration), width="stretch")
-    else:
-        st.info("Gallery illustrations are being prepared.")
+    if photos:
+        with st.expander("View photos" if originals else "View illustrations"):
+            with st.grid(min_column_width=210, gap="small") as gallery:
+                for index, photo in enumerate(photos, start=1):
+                    gallery.image(str(photo), width="stretch", alt=f"Gallery image {index}")
 
-with involvement:
-    st.header("Support children in Kenya")
-    st.write("Visit Upendo Kids to learn about their village, volunteer opportunities, and ways to give.")
-    st.link_button("Visit Upendo Kids", "https://www.upendokids.org/", type="primary")
+
+def donate():
+    st.title("Support the children’s home")
+    st.write("Daily care takes steady support, from meals and bedding to school supplies and health checks.")
+    st.radio("Giving frequency", ["One time", "Monthly"], horizontal=True)
+    st.number_input("Donation amount (KES)", min_value=1, value=1000, step=100)
+    st.caption("Online giving is coming soon. The amount shown is a preview.")
+    st.button("Donate · Coming soon", disabled=True)
+
+
+giving = st.Page(donate, title="Ways to give", url_path="donate")
+details = {slug: info_page(slug) for slug in INFO_PAGES}
+page = st.navigation({
+    "": [st.Page(home, title="Home", default=True), giving],
+    "About the home": [details[slug] for slug in ("about", "board", "founders", "partners", "tour", "impact")],
+    "Get involved": [details[slug] for slug in ("volunteer", "contact", "safeguarding")],
+})
+page.run()
 
 st.divider()
 st.caption("Pastor Cosmus Muema · 2020")

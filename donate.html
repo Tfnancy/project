@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Online giving information for Pastor Cosmus Muema.">
+  <title>Donate | Pastor Cosmus Muema</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="wrap masthead">
+    <a class="brand" href="index.html">Pastor Cosmus Muema</a>
+    <nav aria-label="Main navigation">
+      <a href="about.html">Who we are</a>
+      <a href="donate.html" aria-current="page">Ways to give</a>
+      <a href="tour.html">Tour the home</a>
+      <a href="impact.html">Impact</a>
+      <a href="volunteer.html">Volunteer</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+  <main class="wrap">
+    <section class="help giving" aria-labelledby="giving-title">
+      <h1 id="giving-title">Support the children’s home</h1>
+      <p>Daily care takes steady support, from meals and bedding to school supplies and health checks.</p>
+      <div class="giving-status">
+        <h2>Online giving</h2>
+        <div id="giving-preview" class="giving-preview">
+          <fieldset>
+            <legend>Giving frequency</legend>
+            <label><input type="radio" name="frequency" value="once" checked> One time</label>
+            <label><input type="radio" name="frequency" value="monthly"> Monthly</label>
+          </fieldset>
+          <label class="amount-label" for="amount">Donation amount (KES)</label>
+          <input id="amount" type="number" min="1" step="1" value="1000" list="suggested-amounts">
+          <datalist id="suggested-amounts">
+            <option value="500"></option>
+            <option value="1000"></option>
+            <option value="2500"></option>
+            <option value="5000"></option>
+          </datalist>
+          <div class="suggestions" aria-label="Suggested donation amounts">
+            <button type="button" data-amount="500">KES 500</button>
+            <button type="button" data-amount="1000">KES 1,000</button>
+            <button type="button" data-amount="2500">KES 2,500</button>
+            <button type="button" data-amount="5000">KES 5,000</button>
+          </div>
+        </div>
+        <p id="checkout-status">Online giving is coming soon. Amounts shown here are a preview.</p>
+        <button class="button" id="checkout-unavailable" type="button" disabled>Donate · Coming soon</button>
+        <a class="button" id="checkout-link" hidden>Continue to donation checkout</a>
+      </div>
+    </section>
+    <section aria-labelledby="other-help">
+      <h2 id="other-help">Other ways to help</h2>
+      <p>Explore how to offer supplies, share your skills, or organize a community collection.</p>
+      <a href="index.html#help">See ways to get involved</a>
+    </section>
+  </main>
+  <footer class="wrap">Pastor Cosmus Muema · 2020</footer>
+  <script src="donations.js" defer></script>
+</body>
+</html>

@@ -1,7 +1,11 @@
 [theme]
 base = "light"
 primaryColor = "#286353"
-backgroundColor = "#fbf7ee"
-secondaryBackgroundColor = "#efe6d4"
+backgroundColor = "#fffaf0"
+secondaryBackgroundColor = "#e9efe5"
 textColor = "#19382e"
+borderColor = "#cdd9cc"
+linkColor = "#215847"
 font = "sans serif"
+headingFont = "serif"
+baseRadius = "large"

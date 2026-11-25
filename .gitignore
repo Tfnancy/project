@@ -1,5 +1,8 @@
 /images/*
 !/images/anonymize.py
+!/images/anonymized/
+/images/anonymized/*
+!/images/anonymized/people-[0-9][0-9].png
 /assets/*
 !/assets/gallery-[0-9][0-9].png
 __pycache__/
