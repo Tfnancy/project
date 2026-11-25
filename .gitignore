@@ -1,0 +1,8 @@
+/images/*
+!/images/anonymize.py
+/assets/*
+!/assets/gallery-[0-9][0-9].png
+__pycache__/
+.venv/
+.streamlit/secrets.toml
+.env
