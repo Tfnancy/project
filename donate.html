@@ -35,19 +35,16 @@
             <label><input type="radio" name="frequency" value="monthly"> Monthly</label>
           </fieldset>
           <label class="amount-label" for="amount">Donation amount (KES)</label>
-          <input id="amount" type="number" min="1" step="1" value="1000" list="suggested-amounts">
-          <datalist id="suggested-amounts">
-            <option value="500"></option>
-            <option value="1000"></option>
-            <option value="2500"></option>
-            <option value="5000"></option>
-          </datalist>
-          <div class="suggestions" aria-label="Suggested donation amounts">
+          <input id="amount" type="number" inputmode="numeric" min="1" step="1" value="1000" required aria-describedby="amount-help amount-error">
+          <p class="field-help" id="amount-help">Enter a whole amount of at least KES 1, or choose a suggested amount.</p>
+          <p class="field-error" id="amount-error" role="status"></p>
+          <div class="suggestions" role="group" aria-label="Suggested donation amounts">
             <button type="button" data-amount="500">KES 500</button>
             <button type="button" data-amount="1000">KES 1,000</button>
             <button type="button" data-amount="2500">KES 2,500</button>
             <button type="button" data-amount="5000">KES 5,000</button>
           </div>
+          <p class="giving-summary"><strong>Donation preview</strong> <output for="amount" id="donation-summary" aria-live="polite">KES 1,000 · One time</output></p>
         </div>
         <p id="checkout-status">Online giving is coming soon. Amounts shown here are a preview.</p>
         <button class="button" id="checkout-unavailable" type="button" disabled>Donate · Coming soon</button>

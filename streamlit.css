@@ -12,6 +12,12 @@
 }
 
 .st-key-hero img { border-radius: 1.15rem; }
+.st-key-photo-gallery img {
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background: #eaf1e9;
+  border-radius: .75rem;
+}
 .cosmus-info .page-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));

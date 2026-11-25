@@ -7,6 +7,14 @@ ROOT = Path(__file__).resolve().parent
 IMAGES = ROOT / "images"
 originals = sorted(IMAGES.glob("WhatsApp Image *.jpeg"))
 photos = originals or sorted((IMAGES / "anonymized").glob("people-*.png"))
+PHOTO_DESCRIPTIONS = {
+    "12.48.36 PM.jpeg": "Two children sitting on a bench",
+    "12.48.38 PM.jpeg": "Children and adults standing outside a blue building",
+    "12.48.39 PM.jpeg": "A group gathered outside beside stacked supplies",
+    "12.48.40 PM (1).jpeg": "A bicycle decorated with balloons",
+    "12.48.40 PM.jpeg": "A group working at an outdoor construction site",
+    "12.48.41 PM.jpeg": "Children and adults gathered indoors on colorful mats",
+}
 
 st.set_page_config(page_title="Pastor Cosmus Muema | Children's Home", page_icon=":material/home:", layout="wide")
 st.html(ROOT / "streamlit.css")
@@ -48,8 +56,9 @@ def home():
             st.write("Children need dependable care, support at school, and time to play and build friendships.")
             st.page_link(giving, label="Ways to give", icon=":material/volunteer_activism:")
         if photos:
-            alt = "Photo from the home’s gallery" if originals else "Illustration of figures standing together"
-            st.image(str(photos[0]), width=540, alt=alt)
+            cover = next((photo for photo in photos if photo.name.endswith("12.48.41 PM.jpeg")), photos[0])
+            alt = PHOTO_DESCRIPTIONS.get(cover.name.split(" at ")[-1], "Illustration of figures standing together")
+            st.image(str(cover), width=540, alt=alt)
 
     st.header("Daily care for children")
     with st.grid(min_column_width=220, gap="medium") as care:
@@ -78,10 +87,13 @@ def home():
 
     st.header("Gallery")
     if photos:
-        with st.expander("View photos" if originals else "View illustrations", expanded=True):
-            with st.grid(min_column_width=210, gap="small") as gallery:
-                for index, photo in enumerate(photos, start=1):
-                    gallery.image(str(photo), width="stretch", alt=f"Gallery image {index}")
+        with st.container(key="photo-gallery"):
+            with st.expander("View photos" if originals else "View illustrations", expanded=True):
+                with st.grid(min_column_width=210, gap="small") as gallery:
+                    for photo in photos:
+                        fallback = "Photo from the home’s gallery" if originals else "Faceless illustration from the gallery"
+                        alt = PHOTO_DESCRIPTIONS.get(photo.name.split(" at ")[-1], fallback)
+                        gallery.image(str(photo), width="stretch", alt=alt)
 
 
 def donate():
@@ -91,7 +103,7 @@ def donate():
             st.write("Daily care takes steady support, from meals and bedding to school supplies and health checks.")
         with st.container(width=430, border=True):
             st.subheader("Online giving")
-            st.segmented_control("Giving frequency", ["One time", "Monthly"], default="One time", selection_mode="single")
+            frequency = st.radio("Giving frequency", ["One time", "Monthly"], horizontal=True)
             st.session_state.setdefault("donation_amount", 1000)
             with st.container(horizontal=True):
                 for amount in (500, 1000, 2500, 5000):
@@ -100,7 +112,14 @@ def donate():
                         on_click=st.session_state.update,
                         kwargs={"donation_amount": amount},
                     )
-            st.number_input("Donation amount (KES)", min_value=1, step=1, key="donation_amount")
+            amount = st.number_input(
+                "Donation amount (KES)", min_value=1, step=1, key="donation_amount",
+                help="Enter a whole amount of at least KES 1, or choose a suggested amount.",
+            )
+            if amount is None:
+                st.warning("Enter a whole amount of at least KES 1.")
+            else:
+                st.markdown(f"**Donation preview** · KES {amount:,} · {frequency}")
             st.caption("Online giving is coming soon. The amount shown is a preview.")
             st.button("Donate · Coming soon", type="primary", width="stretch", disabled=True)
 

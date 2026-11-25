@@ -59,7 +59,7 @@ h1 { margin: 0 0 1rem; font-size: clamp(3rem, 7vw, 6rem); font-weight: 500; lett
 h2 { margin: 0 0 1rem; font-size: clamp(2rem, 4vw, 3.2rem); }
 h3 { margin: 0 0 .75rem; font-size: 1.45rem; }
 img { display: block; width: 100%; height: auto; border-radius: .85rem; }
-.hero img { aspect-ratio: 4 / 3; object-fit: cover; }
+.hero img { height: auto; }
 .button {
   display: inline-flex;
   min-height: 46px;
@@ -126,6 +126,12 @@ img { display: block; width: 100%; height: auto; border-radius: .85rem; }
   min-height: 44px;
 }
 .giving-preview input[type="number"] { width: min(100%, 13rem); }
+.giving-preview input[aria-invalid="true"] { border: 2px solid #a52826; }
+.field-help, .field-error { margin: .4rem 0; }
+.field-help { color: #486257; }
+.field-error { color: #a52826; font-weight: 650; }
+.field-error:empty { margin: 0; }
+.giving-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem 1rem; padding: .75rem 1rem; margin: 1rem 0 0; background: var(--mist); border-radius: .65rem; }
 .suggestions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
 .suggestions button { cursor: pointer; }
 .suggestions button:hover, .suggestions button[aria-pressed="true"] { background: var(--mist); border-color: var(--green); }
@@ -133,7 +139,7 @@ img { display: block; width: 100%; height: auto; border-radius: .85rem; }
 summary { cursor: pointer; width: fit-content; padding: .65rem 1rem; font-weight: 700; background: var(--mist); border-radius: .75rem; }
 .gallery { margin-top: 1rem; }
 .gallery a { display: block; border-radius: .85rem; }
-.gallery img { aspect-ratio: 4 / 3; object-fit: cover; }
+.gallery img { aspect-ratio: 4 / 3; object-fit: contain; background: var(--mist); }
 .faq { display: grid; gap: .65rem; }
 .faq details { border: 1px solid var(--line); border-radius: .85rem; background: var(--surface); }
 .faq summary { width: auto; background: transparent; min-height: 44px; }
@@ -148,7 +154,6 @@ footer { padding-block: 1.4rem; border-top: 1px solid var(--line); }
 
 @media (max-width: 680px) {
   .hero, .donation-layout { grid-template-columns: 1fr; }
-  .hero img { aspect-ratio: 3 / 2; }
   .hero-actions .button { width: 100%; }
   .masthead { gap: .75rem; }
   .masthead nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
